@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+@theme {
+  --color-obsidian: #071019;
+  --color-navy: #0c1b2a;
+  --color-slate-navy: #13283e;
+  --color-navy-light: #1a354b;
+  --color-teal: #28aab4;
+  --color-mint: #5ec2a6;
+  --color-aqua: #8ee0d2;
+  --color-ice: #f4f7fa;
+  --color-steel: #94a7b8;
+
+  --font-display: "Fraunces", "Cormorant Garamond", "Georgia", serif;
+  --font-body: "Plus Jakarta Sans", "Segoe UI", Roboto, sans-serif;
+
+  --animate-marquee: marquee 34s linear infinite;
+  --animate-spin-slow: rotate-slow 18s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes rotate-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+html {
+  scroll-behavior: auto;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  @apply bg-obsidian text-ice font-body antialiased;
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+  position: relative;
+}
+
+::selection {
+  background: #28aab4;
+  color: #071019;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #071019;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a354b;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #28aab4;
+}
+
+/* ---------- utilities ---------- */
+
+.teal-gradient-text {
+  background: linear-gradient(100deg, #8ee0d2 0%, #28aab4 35%, #5ec2a6 68%, #8ee0d2 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  @media (prefers-reduced-motion: no-preference) {
+    animation: shimmer 7s linear infinite;
+  }
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.animate-marquee-safe {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: marquee 34s linear infinite;
+  }
+}
+
+.animate-spin-slow-safe {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: rotate-slow 18s linear infinite;
+  }
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.teal-hairline {
+  background: linear-gradient(90deg, transparent, rgba(40, 170, 180, 0.5), transparent);
+}
