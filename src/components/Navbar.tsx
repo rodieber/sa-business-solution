@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  ArrowRight,
   BarChart3,
   ChevronDown,
+  ChevronRight,
   Handshake,
   Mail,
   Menu,
@@ -26,18 +28,21 @@ interface NavbarProps {
   onNavigate: (href: string) => void;
 }
 
-function ServiceIcon({ name }: { name: string }) {
+function ServiceIcon({ name, active }: { name: string; active?: boolean }) {
+  const cls = `h-4 w-4 transition-colors duration-250 ${
+    active ? "text-[#167a82]" : "text-white"
+  }`;
   switch (name) {
     case "wallet":
-      return <Wallet className="h-5 w-5 text-teal" />;
+      return <Wallet className={cls} />;
     case "handshake":
-      return <Handshake className="h-5 w-5 text-teal" />;
+      return <Handshake className={cls} />;
     case "trending":
-      return <TrendingUp className="h-5 w-5 text-teal" />;
+      return <TrendingUp className={cls} />;
     case "workflow":
-      return <Workflow className="h-5 w-5 text-teal" />;
+      return <Workflow className={cls} />;
     default:
-      return <BarChart3 className="h-5 w-5 text-teal" />;
+      return <BarChart3 className={cls} />;
   }
 }
 
@@ -45,6 +50,8 @@ export default function Navbar({ onNavigate }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
+  // Selbetti HTML Widget baf4e30: activates first item on open & resets to 0 on leave
+  const [activeUnitIdx, setActiveUnitIdx] = useState(0);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -59,21 +66,27 @@ export default function Navbar({ onNavigate }: NavbarProps) {
     onNavigate(href);
   };
 
+  const activeService = SERVICES[activeUnitIdx] ?? SERVICES[0];
+
   return (
     <>
       <header
-        onMouseLeave={() => setMegaOpen(false)}
+        onMouseLeave={() => {
+          setMegaOpen(false);
+          setActiveUnitIdx(0);
+        }}
+        style={{ backdropFilter: "blur(15px)" }}
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
           scrolled || megaOpen
-            ? "border-b border-teal/20 bg-obsidian/95 backdrop-blur-xl shadow-[0_10px_35px_rgba(0,0,0,0.65)]"
-            : "border-b border-white/10 bg-obsidian/70 backdrop-blur-md"
+            ? "border-b border-[#28aab4]/25 bg-[#040a10]/92 shadow-[0_10px_35px_rgba(0,0,0,0.65)]"
+            : "border-b border-white/10 bg-[#040a10]/75"
         }`}
       >
         <div className="mx-auto flex max-w-[1360px] items-center justify-between px-5 py-3.5 md:px-8 md:py-4">
           {/* Brand Logo */}
           <button
             onClick={() => go("#inicio")}
-            className="group flex items-center gap-3 text-left"
+            className="group flex items-center gap-3 text-left cursor-pointer"
             aria-label="S.A Business Solution — Início"
           >
             <SaMonogram className="h-9 w-11 shrink-0 transition-transform duration-300 group-hover:scale-105" />
@@ -87,25 +100,31 @@ export default function Navbar({ onNavigate }: NavbarProps) {
             </div>
           </button>
 
-          {/* Desktop Navigation (Selbetti style with Mega Menu for Services) */}
-          <nav className="hidden items-center gap-7 lg:flex" aria-label="Menu principal">
+          {/* Desktop Navigation (Selbetti style with Mega Menu for Business Units) */}
+          <nav
+            className="hidden items-center gap-7 lg:flex"
+            aria-label="Menu principal"
+          >
             <button
               onClick={() => go("#sobre")}
-              className="text-[14px] font-medium text-ice/85 transition-colors hover:text-mint"
+              className="text-[14px] font-medium text-ice/85 transition-colors hover:text-mint cursor-pointer"
             >
-              Sobre a Consultoria
+              A Consultoria
             </button>
 
             <div
               className="relative"
-              onMouseEnter={() => setMegaOpen(true)}
+              onMouseEnter={() => {
+                setMegaOpen(true);
+                setActiveUnitIdx(0);
+              }}
             >
               <button
                 onClick={() => setMegaOpen((v) => !v)}
                 aria-expanded={megaOpen}
-                className="flex items-center gap-1.5 text-[14px] font-medium text-ice/85 transition-colors hover:text-mint py-2"
+                className="flex items-center gap-1.5 text-[14px] font-medium text-ice/85 transition-colors hover:text-mint py-2 cursor-pointer"
               >
-                <span>Unidades de Serviço</span>
+                <span>Unidades de Negócio</span>
                 <ChevronDown
                   className={`h-4 w-4 text-mint transition-transform duration-300 ${
                     megaOpen ? "rotate-180" : ""
@@ -116,30 +135,37 @@ export default function Navbar({ onNavigate }: NavbarProps) {
 
             <button
               onClick={() => go("#desafios")}
-              className="text-[14px] font-medium text-ice/85 transition-colors hover:text-mint"
+              className="text-[14px] font-medium text-ice/85 transition-colors hover:text-mint cursor-pointer"
             >
-              Desafios
+              Barreiras & Dores
             </button>
 
             <button
               onClick={() => go("#conquistas")}
-              className="text-[14px] font-medium text-ice/85 transition-colors hover:text-mint"
+              className="text-[14px] font-medium text-ice/85 transition-colors hover:text-mint cursor-pointer"
             >
-              Resultados
+              Conquistas
+            </button>
+
+            <button
+              onClick={() => go("#solucoes")}
+              className="text-[14px] font-medium text-ice/85 transition-colors hover:text-mint cursor-pointer"
+            >
+              Soluções
             </button>
 
             <button
               onClick={() => go("#lideranca")}
-              className="text-[14px] font-medium text-ice/85 transition-colors hover:text-mint"
+              className="text-[14px] font-medium text-ice/85 transition-colors hover:text-mint cursor-pointer"
             >
-              Diretoria Executiva
+              Diretoria & Cases
             </button>
 
             <button
               onClick={() => go("#faq")}
-              className="text-[14px] font-medium text-ice/85 transition-colors hover:text-mint"
+              className="text-[14px] font-medium text-ice/85 transition-colors hover:text-mint cursor-pointer"
             >
-              Perguntas Frequentes
+              FAQ
             </button>
           </nav>
 
@@ -155,7 +181,7 @@ export default function Navbar({ onNavigate }: NavbarProps) {
             </a>
             <button
               onClick={() => go("#formulario")}
-              className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-teal to-mint px-6 py-2.5 font-display text-[13px] font-bold text-obsidian selbetti-cta-glow transition-all duration-300 hover:brightness-110 sm:inline-flex"
+              className="hidden items-center gap-2 bg-[#28aab4] hover:bg-[#5ec2a6] px-6 py-2.5 font-display text-[14px] font-medium text-white hover:text-[#040a10] selbetti-cta-glow sm:inline-flex cursor-pointer"
             >
               Fale com um Especialista
             </button>
@@ -169,63 +195,142 @@ export default function Navbar({ onNavigate }: NavbarProps) {
           </div>
         </div>
 
-        {/* Selbetti-style Mega Menu Dropdown */}
+        {/* Exact Selbetti post-2003.css + HTML Widget baf4e30 Dual-Panel Mega Menu */}
         <AnimatePresence>
           {megaOpen && (
             <motion.div
-              initial={{ opacity: 0, y: -8 }}
+              initial={{ opacity: 0, y: -6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.22 }}
-              className="hidden border-t border-teal/20 bg-navy/98 backdrop-blur-2xl lg:block"
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.25 }}
+              onMouseLeave={() => setActiveUnitIdx(0)}
+              className="hidden border-t border-[#28aab4]/30 bg-[#040a10]/95 backdrop-blur-2xl lg:block shadow-[0_24px_60px_rgba(0,0,0,0.85)]"
             >
-              <div className="mx-auto max-w-[1360px] px-8 py-8">
-                <div className="mb-5 flex items-center justify-between border-b border-white/10 pb-3">
-                  <span className="font-display text-xs font-bold uppercase tracking-[0.28em] text-mint">
-                    Portfólio de Soluções · S.A Business Solution
-                  </span>
-                  <button
-                    onClick={() => go("#solucoes")}
-                    className="text-xs font-semibold text-teal hover:text-mint transition-colors"
-                  >
-                    Ver todas as soluções na página →
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-5 gap-4">
-                  {SERVICES.map((svc) => (
-                    <button
-                      key={svc.index}
-                      onClick={() => go("#solucoes")}
-                      className="group flex flex-col justify-between rounded-xl border border-white/10 bg-obsidian/70 p-4 text-left transition-all duration-300 hover:border-mint/60 hover:bg-slate-navy/70"
-                    >
-                      <div>
-                        <div className="flex items-center justify-between">
-                          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-teal/15 border border-teal/30">
-                            <ServiceIcon name={svc.iconName} />
-                          </span>
-                          <span className="font-mono text-xs text-mint/70">{svc.index}</span>
-                        </div>
-                        <h3 className="mt-3 font-display text-base font-bold text-ice group-hover:text-mint transition-colors">
-                          {svc.name}
-                        </h3>
-                        <ul className="mt-2.5 space-y-1.5">
-                          {svc.deliverables.map((item) => (
-                            <li
-                              key={item}
-                              className="text-xs text-ice/70 flex items-start gap-1.5"
+              <div className="mx-auto max-w-[1140px] px-8 py-6">
+                <div className="grid grid-cols-12 rounded-[12px] overflow-hidden shadow-2xl border border-[#28aab4]/30">
+                  {/* Left Vertical Menu (#menu-unidade .htmega-verticle-menu ul) */}
+                  <div className="col-span-4 bg-[#167a82] p-4 flex flex-col justify-between">
+                    <ul className="space-y-1.5">
+                      {SERVICES.map((svc, idx) => {
+                        const isActive = idx === activeUnitIdx;
+                        return (
+                          <li
+                            key={svc.index}
+                            onMouseEnter={() => setActiveUnitIdx(idx)}
+                          >
+                            <button
+                              type="button"
+                              onClick={() => go("#solucoes")}
+                              className={`w-full flex items-center justify-between gap-3 px-4 py-3 text-left font-display text-[14px] font-medium transition-all duration-250 cursor-pointer ${
+                                isActive
+                                  ? "rounded-[50px] bg-white text-[#167a82] shadow-md"
+                                  : "rounded-[50px] bg-transparent text-white hover:bg-white hover:text-[#167a82]"
+                              }`}
                             >
-                              <span className="mt-1 h-1.5 w-1.5 rounded-full bg-mint shrink-0" />
-                              <span>{item}</span>
-                            </li>
+                              <span className="flex items-center gap-2.5">
+                                <ServiceIcon
+                                  name={svc.iconName}
+                                  active={isActive}
+                                />
+                                <span>{svc.name}</span>
+                              </span>
+                              <ChevronRight
+                                className={`w-4 h-4 transition-transform duration-250 ${
+                                  isActive
+                                    ? "text-[#167a82] translate-x-0.5"
+                                    : "text-white/80"
+                                }`}
+                              />
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+
+                    <div className="mt-4 pt-3 border-t border-white/20 px-2 flex items-center justify-between text-xs text-white/90">
+                      <span>5 Unidades Integradas</span>
+                      <button
+                        type="button"
+                        onClick={() => go("#solucoes")}
+                        className="font-display font-bold underline hover:text-white cursor-pointer"
+                      >
+                        Ver todas →
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Right Content Wrapper (.htmegamenu-content-wrapper, white bg #FFFFFF like post-2003.css) */}
+                  <div className="col-span-8 bg-white text-[#0a1826] p-7 grid grid-cols-12 gap-6 items-center">
+                    {/* 2-Column Loop Grid of Deliverables (7 cols) */}
+                    <div className="col-span-7 flex flex-col justify-between h-full">
+                      <div>
+                        <span className="inline-block text-[11px] font-display font-bold uppercase tracking-[0.18em] text-[#167a82] mb-1">
+                          Unidade {activeService.index} · S.A Business Solution
+                        </span>
+                        <h3 className="font-display font-bold text-2xl text-[#0a1826] mb-2">
+                          {activeService.name}
+                        </h3>
+                        <p className="text-xs text-[#3b5268] leading-relaxed mb-5">
+                          {activeService.description}
+                        </p>
+
+                        {/* 2-column grid matching Selbetti loop-grid (--grid-columns: 2; --grid-row-gap: 20px) */}
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-3.5">
+                          {activeService.deliverables.map((item) => (
+                            <button
+                              key={item}
+                              type="button"
+                              onClick={() => go("#solucoes")}
+                              className="group/item flex items-start gap-2 text-left p-2 rounded-lg hover:bg-[#f0f7f7] transition-colors cursor-pointer"
+                            >
+                              <span className="mt-1 h-2 w-2 rounded-full bg-[#167a82] shrink-0 group-hover/item:scale-125 transition-transform" />
+                              <span className="font-display font-semibold text-xs text-[#0a1826] group-hover/item:text-[#167a82] transition-colors leading-snug">
+                                {item}
+                              </span>
+                            </button>
                           ))}
-                        </ul>
+                        </div>
                       </div>
-                      <span className="mt-4 inline-block text-[11px] font-semibold text-teal group-hover:translate-x-1 transition-transform">
-                        Conhecer solução →
-                      </span>
-                    </button>
-                  ))}
+
+                      <div className="mt-6 pt-4 border-t border-slate-200 flex items-center justify-between">
+                        <span className="text-[11px] font-medium text-slate-500">
+                          {activeService.meta}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => go("#formulario")}
+                          className="inline-flex items-center gap-1.5 text-xs font-display font-bold text-[#167a82] hover:text-[#0a1826] transition-colors cursor-pointer"
+                        >
+                          Solicitar diagnóstico
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Right Featured Cover Card (.elementor-element-1df5e20 with 0.4 teal hover overlay) */}
+                    <div className="col-span-5">
+                      <div
+                        onClick={() => go("#solucoes")}
+                        className="group/card relative min-h-[220px] rounded-xl overflow-hidden flex flex-col justify-end p-5 cursor-pointer shadow-md"
+                      >
+                        <img
+                          src={activeService.image}
+                          alt={activeService.name}
+                          className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500 group-hover/card:scale-105"
+                        />
+                        {/* Default dark gradient + Selbetti :hover 0.4 teal overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#040a10]/90 via-[#040a10]/40 to-transparent transition-colors duration-300 group-hover/card:bg-[#167a82]/55" />
+                        <div className="relative z-10">
+                          <span className="inline-block rounded bg-[#5ec2a6] px-2.5 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-[#040a10] mb-2">
+                            Atuação Prática
+                          </span>
+                          <p className="font-display font-bold text-sm text-white leading-snug">
+                            {activeService.subtitle}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -237,9 +342,9 @@ export default function Navbar({ onNavigate }: NavbarProps) {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-[90] flex flex-col bg-obsidian/98 backdrop-blur-2xl overflow-y-auto"
           >
@@ -284,7 +389,7 @@ export default function Navbar({ onNavigate }: NavbarProps) {
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-teal to-mint px-6 py-3.5 font-display text-sm font-bold text-obsidian"
+                className="flex items-center justify-center gap-2 bg-gradient-to-r from-teal to-mint px-6 py-3.5 font-display text-sm font-bold text-obsidian"
               >
                 <WhatsAppIcon className="h-4 w-4" />
                 Fale com um Especialista

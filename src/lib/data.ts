@@ -22,6 +22,13 @@ export const NAV_LINKS = [
 export const IMAGES = {
   heroConsulting: "/images/hero-consulting.jpg",
   horizonGlow: "/images/horizon-glow.jpg",
+  horizonVideo: "/images/horizon-video.mp4",
+  cardHoverFrame: "/images/card-hover-frame.png",
+  featureFrameBg: "/images/feature-frame-bg.webp",
+  layersBadge: "/images/layers-badge.webp",
+  glowRectRight: "/images/glow-rect-right.webp",
+  glowRectLeft: "/images/glow-rect-left.webp",
+  faqWaveBg: "/images/faq-wave-bg.webp",
   hero: "/images/hero-corporate.jpg",
   silvana: "/images/silvana-ozima.jpg",
   team: "/images/corporate-team.jpg",

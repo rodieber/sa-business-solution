@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import {
   ArrowRight,
   BarChart3,
+  ChevronDown,
   FileCheck2,
   Handshake,
   Layers,
@@ -182,7 +183,7 @@ export default function Hero({ onNavigate }: { onNavigate: (href: string) => voi
           >
             <button
               onClick={() => onNavigate("#formulario")}
-              className="group inline-flex items-center justify-center gap-3 rounded-lg bg-gradient-to-r from-teal to-mint px-8 py-4 font-display text-base sm:text-[17px] font-bold text-obsidian selbetti-cta-glow transition-all duration-300 hover:brightness-110"
+              className="group inline-flex items-center justify-center gap-3 bg-[#28aab4] hover:bg-[#5ec2a6] px-[35px] py-[15px] font-display text-[18px] font-medium text-white hover:text-[#040a10] selbetti-cta-glow cursor-pointer"
             >
               <span>Veja como atuamos na prática!</span>
               <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -192,7 +193,7 @@ export default function Hero({ onNavigate }: { onNavigate: (href: string) => voi
               href={WHATSAPP_URL}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2.5 rounded-lg border border-mint/50 bg-obsidian/60 px-7 py-4 font-display text-sm sm:text-base font-semibold text-white backdrop-blur-md transition-all duration-300 hover:border-mint hover:bg-slate-navy"
+              className="inline-flex items-center justify-center gap-2.5 border border-mint/50 bg-obsidian/60 px-7 py-[15px] font-display text-sm sm:text-base font-semibold text-white backdrop-blur-md transition-all duration-300 hover:border-mint hover:bg-slate-navy"
             >
               <WhatsAppIcon className="h-4 w-4 text-mint" />
               <span>Falar no WhatsApp</span>
@@ -209,6 +210,18 @@ export default function Hero({ onNavigate }: { onNavigate: (href: string) => voi
         >
           <EcosystemOrbit onSelect={() => onNavigate("#solucoes")} />
         </motion.div>
+      </div>
+
+      {/* Selbetti post-70.css .elementor-element-c6291e1: Bottom Centered Scroll Arrow (bottom: 30px) */}
+      <div className="absolute bottom-[30px] left-0 z-10 w-full text-center">
+        <button
+          type="button"
+          onClick={() => onNavigate("#sobre")}
+          aria-label="Rolar para a próxima seção"
+          className="inline-flex items-center justify-center text-[#5ec2a6] hover:text-white transition-colors animate-bounce cursor-pointer"
+        >
+          <ChevronDown className="h-[26px] w-[26px]" />
+        </button>
       </div>
     </section>
   );

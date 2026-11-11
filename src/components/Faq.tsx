@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { FAQS } from "../lib/data";
+import { FAQS, IMAGES } from "../lib/data";
 
 export function Faq() {
+  // Selbetti b9dc29a: default_state: "expanded", max_items_expended: "one", duration: 400ms
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const toggle = (idx: number) => {
@@ -12,55 +13,56 @@ export function Faq() {
   return (
     <section
       id="faq"
-      className="relative py-20 lg:py-28 bg-[#040a10] border-t border-[#28aab4]/15"
+      className="relative pt-[80px] pb-[160px] bg-[#040a10] border-t border-[#28aab4]/15 overflow-hidden"
     >
-      <div className="mx-auto max-w-[1140px] px-5 sm:px-8">
-        {/* Centered Header (Selbetti Section 10) */}
-        <div className="text-center mb-12 lg:mb-14">
-          <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-[38px] text-white leading-[1.2]">
-            Perguntas <span className="teal-gradient-text">frequentes</span>
+      {/* Selbetti post-70.css .elementor-element-bcb53d5::before (Subtraction-21-1.webp wave overlay, opacity 0.55) */}
+      <div
+        aria-hidden="true"
+        style={{
+          backgroundImage: `url("${IMAGES.faqWaveBg}")`,
+          backgroundPosition: "0px 220px",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+        }}
+        className="pointer-events-none absolute inset-0 opacity-45 hue-rotate-[35deg]"
+      />
+
+      <div className="relative z-10 mx-auto max-w-[1360px] px-5 sm:px-8">
+        {/* Centered Header (.elementor-element-d1e6f7a: Montserrat 48px weight 600, padding-bottom 80px) */}
+        <div className="text-center pb-12 lg:pb-[70px]">
+          <h2 className="font-display font-semibold text-3xl sm:text-4xl lg:text-[48px] text-white leading-[1.2]">
+            Perguntas frequentes
           </h2>
-          <p className="mt-3 font-display font-medium text-base text-[#5ec2a6]">
-            Tire suas dúvidas sobre como a S.A Business Solution atua na sua
-            empresa:
-          </p>
         </div>
 
-        {/* 90%-Width Centered Accordion */}
-        <div className="mx-auto max-w-[980px] space-y-4">
+        {/* Selbetti .elementor-element-b9dc29a: 90% width underline-border accordion */}
+        <div className="mx-auto w-full max-w-[90%]">
           {FAQS.map((item, idx) => {
             const isOpen = openIndex === idx;
             return (
-              <div
-                key={idx}
-                className={`rounded-[14px] transition-all duration-300 ${
-                  isOpen
-                    ? "bg-[#0a1826] border-2 border-[#5ec2a6] shadow-[0_0_24px_rgba(94,194,166,0.16)]"
-                    : "bg-[#0a1826]/75 border border-[#28aab4]/30 hover:border-[#28aab4]/60"
-                }`}
-              >
+              <div key={idx} className="mb-5">
                 <button
                   type="button"
                   onClick={() => toggle(idx)}
                   aria-expanded={isOpen}
-                  className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left cursor-pointer"
+                  className={`w-full flex items-center justify-between gap-[40px] py-4 text-left transition-all duration-300 cursor-pointer ${
+                    isOpen
+                      ? "border-b-0"
+                      : "border-b-2 border-[#80baa5] hover:border-b"
+                  }`}
                 >
-                  <span className="font-display font-semibold text-base sm:text-[18px] text-[#5ec2a6] leading-snug">
+                  <span className="font-display font-bold text-lg sm:text-[20px] text-white leading-snug">
                     {item.question}
                   </span>
-                  <span
-                    className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 ${
-                      isOpen
-                        ? "bg-[#5ec2a6] text-[#040a10] rotate-180"
-                        : "bg-[#12263a] text-[#5ec2a6]"
+                  <ChevronDown
+                    className={`w-[18px] h-[18px] text-[#5ec2a6] shrink-0 transition-transform duration-400 ${
+                      isOpen ? "rotate-180" : ""
                     }`}
-                  >
-                    <ChevronDown className="w-4 h-4" />
-                  </span>
+                  />
                 </button>
 
                 {isOpen && (
-                  <div className="px-6 pb-6 pt-1 text-sm sm:text-[15.5px] text-[#d5e0ec] leading-relaxed border-t border-white/10">
+                  <div className="pt-2 pb-5 border-b-2 border-[#80baa5] text-base sm:text-[17px] text-[#80baa5] leading-relaxed animate-fadeIn">
                     {item.answer}
                   </div>
                 )}

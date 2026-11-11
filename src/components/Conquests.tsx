@@ -1,6 +1,31 @@
 import { useState } from "react";
-import { CheckCircle2, ChevronRight, Sparkles } from "lucide-react";
-import { CONQUESTS } from "../lib/data";
+import {
+  Wallet,
+  Handshake,
+  TrendingUp,
+  Workflow,
+  Sparkles,
+  BarChart3,
+  CheckCircle2,
+} from "lucide-react";
+import { CONQUESTS, IMAGES } from "../lib/data";
+
+function ConquestIcon({ index }: { index: number }) {
+  switch (index) {
+    case 0:
+      return <Wallet className="w-[26px] h-[26px]" />;
+    case 1:
+      return <Handshake className="w-[26px] h-[26px]" />;
+    case 2:
+      return <TrendingUp className="w-[26px] h-[26px]" />;
+    case 3:
+      return <Workflow className="w-[26px] h-[26px]" />;
+    case 4:
+      return <Sparkles className="w-[26px] h-[26px]" />;
+    default:
+      return <BarChart3 className="w-[26px] h-[26px]" />;
+  }
+}
 
 interface ConquestsProps {
   onNavigate: (href: string) => void;
@@ -8,154 +33,172 @@ interface ConquestsProps {
 
 export function Conquests({ onNavigate }: ConquestsProps) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const current = CONQUESTS[activeIndex] ?? CONQUESTS[0];
 
   return (
     <section
       id="conquistas"
-      className="relative py-20 lg:py-28 bg-[#040a10] border-t border-[#28aab4]/15 overflow-hidden"
+      style={{
+        backgroundImage: "linear-gradient(180deg, #040a10 0%, #061824 100%)",
+      }}
+      className="relative py-[80px] border-t border-[#28aab4]/15 overflow-hidden"
     >
-      {/* Subtle Ambient Glow */}
-      <div
+      {/* Selbetti post-70.css .elementor-element-cb93b0d: Floating left glow image (left: -78px, bottom: 258px, width: 308px) */}
+      <img
+        src={IMAGES.glowRectLeft}
+        alt=""
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#28aab4]/8 blur-[140px]"
+        loading="lazy"
+        className="pointer-events-none hidden lg:block absolute left-[-78px] bottom-[160px] w-[308px] h-auto opacity-75 hue-rotate-[35deg]"
       />
 
-      <div className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
-        {/* Centered Header (Selbetti Section 5 exact hierarchy) */}
-        <div className="max-w-3xl mx-auto text-center mb-14 lg:mb-16">
-          <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-[38px] text-white leading-[1.22]">
+      <div className="relative z-10 mx-auto max-w-[1360px] px-5 sm:px-8">
+        {/* Centered Header (.elementor-element-c2dcb26: Montserrat 48px/57px weight 600) */}
+        <div className="max-w-4xl mx-auto text-center mb-10 lg:pb-[40px]">
+          <h2 className="font-display font-semibold text-2xl sm:text-4xl lg:text-[46px] text-white leading-[1.2]">
             O que sua empresa conquista com uma{" "}
             <span className="teal-gradient-text">
               consultoria empresarial especializada
             </span>
           </h2>
-          <p className="mt-4 font-display font-medium text-base sm:text-lg text-[#5ec2a6]">
-            Selecione cada frente de atuação ao lado para visualizar as entregas
-            práticas na sua operação:
+          <p className="mt-4 font-body font-normal text-base sm:text-[20px] text-[#80baa5]">
+            A S.A Business Solution atua de forma prática para gerar eficiência,
+            governança e resultados sustentáveis:
           </p>
         </div>
 
-        {/* Selbetti Interactive Split Showcase (45% Left Preview Card / 55% Right Gradient Bars) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
-          {/* Left Column (45% / 5 cols): Active Preview Card with #5EC2A6 2px border */}
-          <div className="lg:col-span-5 flex">
-            <div className="w-full rounded-[16px] border-2 border-[#5ec2a6] bg-[#0a1826] p-6 sm:p-7 shadow-[0_0_28px_rgba(94,194,166,0.2)] flex flex-col justify-between transition-all duration-300">
-              <div>
-                {/* Preview Image Header */}
-                <div className="relative h-48 sm:h-52 rounded-[12px] overflow-hidden mb-6 border border-[#28aab4]/30 bg-[#040a10]">
-                  <img
-                    src={current.image}
-                    alt={current.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover object-center opacity-90 transition-all duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a1826] via-[#0a1826]/30 to-transparent" />
-                  <div className="absolute top-3 left-3">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#040a10]/90 backdrop-blur-md border border-[#5ec2a6]/40 px-3 py-1 text-[11px] font-display font-bold uppercase tracking-wider text-[#5ec2a6]">
-                      <Sparkles className="w-3 h-3" />
-                      {current.badge}
-                    </span>
-                  </div>
-                  <div className="absolute bottom-3 left-4 right-4 flex items-baseline justify-between">
-                    <span className="font-display font-extrabold text-2xl sm:text-3xl text-white drop-shadow">
-                      {current.metric}
-                    </span>
-                    <span className="text-xs text-[#d5e0ec] font-medium">
-                      {current.metricLabel}
-                    </span>
-                  </div>
-                </div>
+        {/* Selbetti Interactive Split Showcase (45% Left #gptw-swiper / 55% Right .gptw-trigger list) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          {/* Left Column (5 cols): #gptw-swiper Horizontal Slide Deck + Morphing Pagination Bullets */}
+          <div className="lg:col-span-5 flex flex-col items-center">
+            <div className="w-full overflow-hidden rounded-[10px] border-2 border-[#80baa5] bg-[#0a1826] shadow-[0_0_15px_#80baa5]">
+              {/* Horizontal Sliding Track (speed: 500ms like Selbetti Swiper) */}
+              <div
+                className="flex transition-transform duration-500 ease-out"
+                style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+              >
+                {CONQUESTS.map((slide) => (
+                  <div
+                    key={slide.id}
+                    className="w-full shrink-0 flex flex-col justify-between p-6 sm:p-7 min-h-[520px] sm:min-h-[560px]"
+                  >
+                    <div>
+                      {/* Slide Image Header */}
+                      <div className="relative h-52 sm:h-56 rounded-[8px] overflow-hidden mb-6 border border-[#80baa5]/40 bg-[#040a10]">
+                        <img
+                          src={slide.image}
+                          alt={slide.title}
+                          loading="lazy"
+                          className="w-full h-full object-cover object-center opacity-90"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a1826] via-[#0a1826]/25 to-transparent" />
+                        <div className="absolute top-3 left-3">
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#040a10]/90 backdrop-blur-md border border-[#80baa5]/50 px-3 py-1 text-[11px] font-display font-bold uppercase tracking-wider text-[#80baa5]">
+                            {slide.badge}
+                          </span>
+                        </div>
+                        <div className="absolute bottom-3 left-4 right-4 flex items-baseline justify-between">
+                          <span className="font-display font-extrabold text-2xl sm:text-3xl text-white drop-shadow">
+                            {slide.metric}
+                          </span>
+                          <span className="text-xs text-[#ebebeb] font-medium">
+                            {slide.metricLabel}
+                          </span>
+                        </div>
+                      </div>
 
-                {/* Active Title & Description */}
-                <h3 className="font-display font-bold text-xl sm:text-2xl text-white leading-snug mb-3">
-                  {current.title}
-                </h3>
-                <p className="text-sm sm:text-[15px] text-[#c4d3e3] leading-relaxed mb-6">
-                  {current.description}
-                </p>
+                      {/* Slide Title & Description */}
+                      <h3 className="font-display font-bold text-xl sm:text-2xl text-white leading-snug mb-3">
+                        {slide.title}
+                      </h3>
+                      <p className="text-sm sm:text-[15px] text-[#d5e0ec] leading-relaxed mb-5">
+                        {slide.description}
+                      </p>
 
-                {/* Bullet Deliverables */}
-                <div className="space-y-2.5 border-t border-white/10 pt-5">
-                  {current.bullets.map((bullet, i) => (
-                    <div
-                      key={i}
-                      className="flex items-center gap-2.5 text-sm text-white font-medium"
-                    >
-                      <CheckCircle2 className="w-4 h-4 text-[#5ec2a6] shrink-0" />
-                      <span>{bullet}</span>
+                      {/* Deliverables Checklist */}
+                      <div className="space-y-2.5 border-t border-white/10 pt-4">
+                        {slide.bullets.map((bullet, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-center gap-2.5 text-sm text-white font-medium"
+                          >
+                            <CheckCircle2 className="w-4 h-4 text-[#80baa5] shrink-0" />
+                            <span>{bullet}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </div>
 
-              <div className="mt-7 pt-4 border-t border-white/10">
-                <button
-                  type="button"
-                  onClick={() => onNavigate("#formulario")}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#28aab4] to-[#5ec2a6] px-5 py-3.5 font-display font-bold text-xs sm:text-sm uppercase tracking-wider text-[#040a10] hover:brightness-110 transition-all cursor-pointer"
-                >
-                  Solicitar diagnóstico desta área
-                  <ChevronRight className="w-4 h-4" />
-                </button>
+                    <div className="mt-6 pt-4 border-t border-white/10">
+                      <button
+                        type="button"
+                        onClick={() => onNavigate("#formulario")}
+                        className="w-full bg-[#28aab4] hover:bg-[#5ec2a6] px-5 py-3 font-display font-semibold text-xs sm:text-sm uppercase tracking-wider text-white hover:text-[#040a10] transition-colors cursor-pointer"
+                      >
+                        Solicitar diagnóstico desta área
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
 
-          {/* Right Column (55% / 7 cols): 6 Interactive Horizontal Selector Bars */}
-          <div className="lg:col-span-7 flex flex-col justify-between gap-3.5">
-            {CONQUESTS.map((item, idx) => {
-              const isActive = idx === activeIndex;
-              return (
+            {/* Selbetti post-70.css #gptw-swiper .swiper-pagination-bullet (circle -> morphs to square when active!) */}
+            <div
+              className="flex items-center justify-center mt-4"
+              role="tablist"
+              aria-label="Navegação de conquistas"
+            >
+              {CONQUESTS.map((item, idx) => (
                 <button
                   key={item.id}
                   type="button"
+                  role="tab"
+                  aria-selected={idx === activeIndex}
+                  aria-label={`Slide ${idx + 1}: ${item.title}`}
+                  onClick={() => setActiveIndex(idx)}
+                  className={`gptw-bullet ${
+                    idx === activeIndex ? "gptw-bullet-active" : ""
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Right Column (7 cols): 6 Interactive .gptw-trigger Bars (square icon -> morphs to 50% circle on hover/active) */}
+          <div className="lg:col-span-7 flex flex-col gap-1">
+            {CONQUESTS.map((item, idx) => {
+              const isActive = idx === activeIndex;
+              return (
+                <div
+                  key={item.id}
+                  role="button"
+                  tabIndex={0}
                   onClick={() => setActiveIndex(idx)}
                   onMouseEnter={() => setActiveIndex(idx)}
-                  className={`w-full text-left rounded-[12px] px-5 py-4 sm:px-6 sm:py-5 transition-all duration-300 flex items-center justify-between gap-4 cursor-pointer ${
-                    isActive
-                      ? "selbetti-active-bar border border-[#5ec2a6] shadow-[0_0_22px_rgba(40,170,180,0.32)] scale-[1.01]"
-                      : "bg-[#0a1826]/85 hover:bg-[#12263a]/80 border border-[#28aab4]/25 hover:border-[#28aab4]/60"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setActiveIndex(idx);
+                    }
+                  }}
+                  className={`gptw-trigger flex items-center gap-[15px] text-left ${
+                    isActive ? "gptw-trigger-active" : ""
                   }`}
                 >
-                  <div className="flex items-center gap-4 min-w-0">
-                    <span
-                      className={`w-9 h-9 rounded-full flex items-center justify-center font-display font-bold text-xs shrink-0 transition-colors ${
-                        isActive
-                          ? "bg-white text-[#040a10] shadow-md"
-                          : "bg-[#12263a] text-[#5ec2a6] border border-[#28aab4]/30"
-                      }`}
-                    >
-                      0{idx + 1}
-                    </span>
-                    <div className="min-w-0">
-                      <h4
-                        className={`font-display font-bold text-base sm:text-[17px] leading-snug transition-colors ${
-                          isActive ? "text-white" : "text-[#e1eaf2]"
-                        }`}
-                      >
-                        {item.title}
-                      </h4>
-                      <p
-                        className={`text-xs sm:text-sm line-clamp-1 mt-0.5 ${
-                          isActive ? "text-white/90" : "text-[#8fa6bc]"
-                        }`}
-                      >
-                        {item.bullets.join(" • ")}
-                      </p>
-                    </div>
-                  </div>
+                  {/* Stacked Icon (square 0px -> morphs to 50% circle on hover/active) */}
+                  <span className="gptw-icon shrink-0">
+                    <ConquestIcon index={idx} />
+                  </span>
 
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-transform ${
-                      isActive
-                        ? "bg-white/20 text-white translate-x-0.5"
-                        : "bg-white/5 text-[#5ec2a6]"
-                    }`}
-                  >
-                    <ChevronRight className="w-4 h-4" />
+                  <div className="min-w-0">
+                    <h4 className="font-body text-[16px] font-medium text-white mb-[5px] leading-snug">
+                      {item.title}
+                    </h4>
+                    <p className="font-body text-[14px] font-normal text-white/90 leading-relaxed">
+                      {item.description}
+                    </p>
                   </div>
-                </button>
+                </div>
               );
             })}
           </div>
