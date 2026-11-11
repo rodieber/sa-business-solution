@@ -1,95 +1,305 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Mail } from "lucide-react";
+import { useState, type FormEvent } from "react";
+import {
+  Phone,
+  Mail,
+  Send,
+  CheckCircle2,
+  ShieldCheck,
+  MessageSquare,
+} from "lucide-react";
 import {
   DIRECTOR_NAME,
   EMAIL_ADDRESS,
-  IMAGES,
-  MAILTO_URL,
   PHONE_DISPLAY,
-  WHATSAPP_URL,
+  SERVICES,
+  WHATSAPP_PHONE,
 } from "../lib/data";
-import { Eyebrow, Reveal } from "../lib/anim";
-import { BrandLinesPattern, SaMonogram, WhatsAppIcon } from "./icons";
 
-export default function Cta() {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
+export function Cta() {
+  const [name, setName] = useState("");
+  const [company, setCompany] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [selectedPillars, setSelectedPillars] = useState<string[]>([
+    "Financeiro",
+  ]);
+  const [message, setMessage] = useState("");
+
+  const togglePillar = (pillarName: string) => {
+    setSelectedPillars((prev) =>
+      prev.includes(pillarName)
+        ? prev.filter((p) => p !== pillarName)
+        : [...prev, pillarName]
+    );
+  };
+
+  const handleSubmitWhatsApp = (e: FormEvent) => {
+    e.preventDefault();
+    const areas =
+      selectedPillars.length > 0
+        ? selectedPillars.join(", ")
+        : "Diagnóstico Completo";
+    const text = [
+      `Olá, ${DIRECTOR_NAME}! Gostaria de agendar um diagnóstico com a *S.A Business Solution*.`,
+      "",
+      `*Nome:* ${name || "Não informado"}`,
+      `*Empresa:* ${company || "Não informada"}`,
+      `*Telefone:* ${phone || "Não informado"}`,
+      email ? `*E-mail:* ${email}` : "",
+      `*Áreas de interesse:* ${areas}`,
+      message ? `*Observações:* ${message}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const url = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(
+      text
+    )}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
 
   return (
     <section
-      ref={ref}
-      id="contato"
-      className="relative w-full max-w-full overflow-hidden py-24 sm:py-28 md:py-40"
+      id="formulario"
+      className="relative py-20 lg:py-28 bg-[#040a10] border-t border-[#28aab4]/20 overflow-hidden"
     >
-      <motion.div style={{ y }} className="absolute inset-0 scale-125">
-        <img
-          src={IMAGES.hero}
-          alt=""
-          aria-hidden
-          loading="lazy"
-          className="h-full w-full object-cover opacity-35"
-        />
-        <div className="absolute inset-0 bg-obsidian/80" />
-        <div className="absolute inset-0 bg-gradient-to-b from-obsidian via-navy/60 to-obsidian" />
-      </motion.div>
+      {/* Background Glow */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-24 right-0 w-[600px] h-[600px] rounded-full bg-[#28aab4]/12 blur-[150px]"
+      />
 
-      <div className="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 w-[500px] sm:w-[700px] opacity-20">
-        <BrandLinesPattern className="w-full h-auto" />
-      </div>
+      <div className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
+        <div className="rounded-[24px] bg-gradient-to-br from-[#0a1826] via-[#0d2033] to-[#040a10] border-2 border-[#5ec2a6]/60 p-6 sm:p-10 lg:p-14 shadow-[0_0_40px_rgba(40,170,180,0.2)]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            {/* Left Column (5 cols): Selbetti Section 9 Value Pitch */}
+            <div className="lg:col-span-5">
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#12263a] border border-[#5ec2a6]/40 px-4 py-1.5 mb-5">
+                <span className="w-2 h-2 rounded-full bg-[#5ec2a6] animate-pulse" />
+                <span className="font-display font-semibold text-xs uppercase tracking-[0.14em] text-[#5ec2a6]">
+                  Atendimento Executivo Especializado
+                </span>
+              </div>
 
-      <div className="grain absolute inset-0" />
+              <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-[36px] text-white leading-[1.2] mb-5">
+                Impulsione os seus resultados com uma{" "}
+                <span className="teal-gradient-text">
+                  gestão de ponta a ponta
+                </span>
+              </h2>
 
-      <div className="relative mx-auto flex max-w-4xl flex-col items-center px-5 text-center md:px-10">
-        <Eyebrow align="center">Agende uma Conversa Executiva</Eyebrow>
+              <p className="text-[#d5e0ec] text-sm sm:text-base leading-relaxed mb-7">
+                Preencha os dados ao lado para falar diretamente com a nossa
+                diretoria. Analisaremos os desafios da sua empresa e
+                apresentaremos um plano prático para o seu negócio.
+              </p>
 
-        <Reveal delay={0.1}>
-          <h2 className="mt-8 font-display text-[clamp(2.3rem,5.6vw,5.2rem)] font-light leading-[1.03] text-ice">
-            Pronto para elevar a{" "}
-            <span className="teal-gradient-text italic">gestão</span> da sua empresa?
-          </h2>
-        </Reveal>
+              {/* Key Benefits List */}
+              <div className="space-y-3.5 mb-8">
+                {[
+                  "Diagnóstico empresarial direcionado à sua realidade",
+                  "Atuação prática em Financeiro, Negociações e Comercial",
+                  "Implantação de POPs, Fluxogramas, 5S e Organograma",
+                  "Apresentação mensal em Dashboard para a diretoria",
+                ].map((benefit, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-[#5ec2a6] shrink-0 mt-0.5" />
+                    <span className="text-sm text-white font-medium">
+                      {benefit}
+                    </span>
+                  </div>
+                ))}
+              </div>
 
-        <Reveal delay={0.2}>
-          <p className="mt-6 max-w-xl leading-relaxed text-ice/75 text-sm sm:text-base">
-            Entre em contato diretamente com <strong className="text-ice">{DIRECTOR_NAME}</strong>{" "}
-            para uma análise das necessidades administrativas, financeiras, comerciais e de RH da
-            sua organização.
-          </p>
-        </Reveal>
+              {/* Direct Contact Cards */}
+              <div className="space-y-3 pt-6 border-t border-white/10">
+                <a
+                  href={`https://wa.me/${WHATSAPP_PHONE}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3.5 rounded-xl bg-[#040a10]/70 hover:bg-[#12263a] border border-[#28aab4]/30 px-4 py-3 transition-colors"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-[#28aab4]/20 border border-[#5ec2a6]/40 flex items-center justify-center text-[#5ec2a6] shrink-0">
+                    <Phone className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-display font-semibold uppercase tracking-wider text-[#8fa6bc]">
+                      WhatsApp Direto • {DIRECTOR_NAME}
+                    </p>
+                    <p className="font-display font-bold text-sm sm:text-base text-white">
+                      {PHONE_DISPLAY}
+                    </p>
+                  </div>
+                </a>
 
-        <Reveal delay={0.3}>
-          <div className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 sm:gap-4 w-full max-w-md sm:max-w-none">
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="group flex justify-center items-center gap-3 rounded-full bg-gradient-to-r from-teal to-mint px-8 sm:px-9 py-4 text-xs sm:text-sm font-bold tracking-wide text-obsidian transition-all duration-300 hover:brightness-110 hover:shadow-[0_0_50px_rgba(40,170,180,0.5)]"
-            >
-              <WhatsAppIcon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
-              WhatsApp: {PHONE_DISPLAY}
-            </a>
-            <a
-              href={MAILTO_URL}
-              className="group flex justify-center items-center gap-3 rounded-full border border-ice/25 bg-obsidian/50 px-8 sm:px-9 py-4 text-xs sm:text-sm font-semibold tracking-wide text-ice backdrop-blur-sm transition-all duration-300 hover:border-teal hover:text-teal"
-            >
-              <Mail className="h-4 w-4 text-teal" />
-              {EMAIL_ADDRESS}
-            </a>
+                <a
+                  href={`mailto:${EMAIL_ADDRESS}`}
+                  className="flex items-center gap-3.5 rounded-xl bg-[#040a10]/70 hover:bg-[#12263a] border border-[#28aab4]/30 px-4 py-3 transition-colors"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-[#28aab4]/20 border border-[#5ec2a6]/40 flex items-center justify-center text-[#5ec2a6] shrink-0">
+                    <Mail className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-display font-semibold uppercase tracking-wider text-[#8fa6bc]">
+                      E-mail Corporativo
+                    </p>
+                    <p className="font-display font-bold text-sm text-white truncate">
+                      {EMAIL_ADDRESS}
+                    </p>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            {/* Right Column (7 cols): Interactive Specialist Lead Form */}
+            <div className="lg:col-span-7">
+              <form
+                onSubmit={handleSubmitWhatsApp}
+                className="rounded-[18px] bg-[#040a10]/90 border border-[#28aab4]/35 p-6 sm:p-8 shadow-xl"
+              >
+                <div className="flex items-center justify-between gap-2 mb-6 pb-4 border-b border-white/10">
+                  <div>
+                    <h3 className="font-display font-bold text-lg sm:text-xl text-white">
+                      Solicite o contato de um especialista
+                    </h3>
+                    <p className="text-xs text-[#8fa6bc] mt-0.5">
+                      Retorno rápido direto com a diretoria executiva
+                    </p>
+                  </div>
+                  <ShieldCheck className="w-6 h-6 text-[#5ec2a6] shrink-0" />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label
+                      htmlFor="lead-name"
+                      className="block text-xs font-display font-semibold uppercase tracking-wider text-[#c4d3e3] mb-1.5"
+                    >
+                      Seu Nome *
+                    </label>
+                    <input
+                      id="lead-name"
+                      type="text"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Ex.: João Silva"
+                      className="w-full rounded-xl bg-[#0a1826] border border-[#28aab4]/35 focus:border-[#5ec2a6] px-4 py-3 text-sm text-white placeholder-[#647b91] outline-none transition-colors"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="lead-company"
+                      className="block text-xs font-display font-semibold uppercase tracking-wider text-[#c4d3e3] mb-1.5"
+                    >
+                      Nome da Empresa *
+                    </label>
+                    <input
+                      id="lead-company"
+                      type="text"
+                      required
+                      value={company}
+                      onChange={(e) => setCompany(e.target.value)}
+                      placeholder="Ex.: Empresa Ltda"
+                      className="w-full rounded-xl bg-[#0a1826] border border-[#28aab4]/35 focus:border-[#5ec2a6] px-4 py-3 text-sm text-white placeholder-[#647b91] outline-none transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+                  <div>
+                    <label
+                      htmlFor="lead-phone"
+                      className="block text-xs font-display font-semibold uppercase tracking-wider text-[#c4d3e3] mb-1.5"
+                    >
+                      Telefone / WhatsApp *
+                    </label>
+                    <input
+                      id="lead-phone"
+                      type="tel"
+                      required
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="(44) 99999-9999"
+                      className="w-full rounded-xl bg-[#0a1826] border border-[#28aab4]/35 focus:border-[#5ec2a6] px-4 py-3 text-sm text-white placeholder-[#647b91] outline-none transition-colors"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="lead-email"
+                      className="block text-xs font-display font-semibold uppercase tracking-wider text-[#c4d3e3] mb-1.5"
+                    >
+                      E-mail Corporativo
+                    </label>
+                    <input
+                      id="lead-email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="contato@suaempresa.com.br"
+                      className="w-full rounded-xl bg-[#0a1826] border border-[#28aab4]/35 focus:border-[#5ec2a6] px-4 py-3 text-sm text-white placeholder-[#647b91] outline-none transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* Multi-select Service Pillars */}
+                <div className="mb-5">
+                  <span className="block text-xs font-display font-semibold uppercase tracking-wider text-[#c4d3e3] mb-2">
+                    Quais unidades sua empresa mais precisa agora?
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {SERVICES.map((s) => {
+                      const active = selectedPillars.includes(s.name);
+                      return (
+                        <button
+                          key={s.index}
+                          type="button"
+                          onClick={() => togglePillar(s.name)}
+                          className={`rounded-lg px-3.5 py-2 text-xs font-display font-semibold transition-all cursor-pointer ${
+                            active
+                              ? "bg-[#5ec2a6] text-[#040a10] shadow-[0_0_12px_rgba(94,194,166,0.4)]"
+                              : "bg-[#0a1826] text-[#c4d3e3] border border-[#28aab4]/30 hover:border-[#5ec2a6]"
+                          }`}
+                        >
+                          {active ? "✓ " : "+ "}
+                          {s.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <label
+                    htmlFor="lead-message"
+                    className="block text-xs font-display font-semibold uppercase tracking-wider text-[#c4d3e3] mb-1.5"
+                  >
+                    Principais desafios ou objetivos (opcional)
+                  </label>
+                  <textarea
+                    id="lead-message"
+                    rows={3}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Conte brevemente sobre o momento atual da sua empresa..."
+                    className="w-full rounded-xl bg-[#0a1826] border border-[#28aab4]/35 focus:border-[#5ec2a6] px-4 py-3 text-sm text-white placeholder-[#647b91] outline-none transition-colors resize-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full inline-flex items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#28aab4] to-[#5ec2a6] px-7 py-4 font-display font-bold text-sm uppercase tracking-wider text-[#040a10] selbetti-cta-glow hover:brightness-110 transition-all cursor-pointer"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  <span>Enviar e Falar com Especialista</span>
+                  <Send className="w-4 h-4" />
+                </button>
+              </form>
+            </div>
           </div>
-        </Reveal>
-
-        <Reveal delay={0.4}>
-          <div className="mt-12 flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] text-ice/55">
-            <SaMonogram className="h-5 w-6" />
-            <span>S.A Business Solution · Solução para sua empresa</span>
-            <SaMonogram className="h-5 w-6" />
-          </div>
-        </Reveal>
+        </div>
       </div>
     </section>
   );

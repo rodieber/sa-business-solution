@@ -1,198 +1,162 @@
-import { Award, Briefcase, GraduationCap, Mail, Phone } from "lucide-react";
+import { Award, GraduationCap, Quote, CheckCircle2 } from "lucide-react";
 import {
   CREDENTIALS,
   DIRECTOR_NAME,
   DIRECTOR_ROLE,
-  EMAIL_ADDRESS,
   IMAGES,
-  MAILTO_URL,
-  PHONE_DISPLAY,
-  WHATSAPP_URL,
+  TESTIMONIALS,
 } from "../lib/data";
-import { Eyebrow, Reveal } from "../lib/anim";
-import { BrandLinesPattern, SaMonogram, WhatsAppIcon } from "./icons";
 
-export default function Leadership() {
+export function Leadership() {
   return (
     <section
       id="lideranca"
-      className="relative w-full max-w-full overflow-hidden bg-obsidian py-20 sm:py-24 md:py-36"
+      className="relative py-20 lg:py-28 bg-gradient-to-b from-[#040a10] via-[#0a1826] to-[#040a10] border-t border-[#28aab4]/15 overflow-hidden"
     >
-      {/* Ambient glow */}
-      <div className="pointer-events-none absolute left-1/2 top-20 h-[420px] w-[680px] max-w-[100vw] -translate-x-1/2 rounded-full bg-teal/8 blur-[150px]" />
-
-      <div className="mx-auto max-w-7xl px-5 md:px-10">
-        <div className="flex flex-col items-center text-center">
-          <Eyebrow align="center">Diretoria Executiva</Eyebrow>
-          <Reveal delay={0.1}>
-            <h2 className="mt-6 font-display text-4xl font-light leading-[1.05] text-ice md:text-6xl">
-              Liderança com <span className="italic text-teal">três décadas</span> de experiência
-            </h2>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-ice/65 sm:text-base">
-              Conheça a trajetória executiva e acadêmica que sustenta cada projeto, diagnóstico e
-              solução entregue pela S.A Business Solution.
-            </p>
-          </Reveal>
-        </div>
-
-        {/* Main Executive Profile Card */}
-        <div className="mt-16 grid gap-10 lg:grid-cols-[380px_1fr] xl:grid-cols-[420px_1fr] items-start">
-          {/* Portrait & Executive Business Card */}
-          <Reveal delay={0.15}>
-            <div className="relative overflow-hidden rounded-3xl border border-teal/25 bg-gradient-to-b from-slate-navy to-navy p-7 sm:p-8 shadow-2xl">
-              <div className="pointer-events-none absolute -bottom-8 -right-8 w-56 opacity-20">
-                <BrandLinesPattern className="w-full h-auto" />
-              </div>
-
-              <div className="relative mx-auto w-48 h-48 sm:w-56 sm:h-56 overflow-hidden rounded-full border-4 border-teal p-1 shadow-[0_0_40px_rgba(40,170,180,0.25)]">
+      <div className="mx-auto max-w-[1280px] px-5 sm:px-8">
+        {/* PART 1: Executive Director Authority (Silvana A. Ozima) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center mb-24">
+          {/* Portrait Frame (5 cols) */}
+          <div className="lg:col-span-5">
+            <div className="relative mx-auto max-w-md rounded-[20px] border-2 border-[#5ec2a6] bg-[#0a1826] p-3 shadow-[0_0_32px_rgba(94,194,166,0.2)]">
+              <div className="relative rounded-[14px] overflow-hidden aspect-[4/5] bg-[#040a10]">
                 <img
                   src={IMAGES.silvana}
-                  alt={`${DIRECTOR_NAME} — ${DIRECTOR_ROLE}`}
+                  alt={`${DIRECTOR_NAME} — ${DIRECTOR_ROLE} da S.A Business Solution`}
                   loading="lazy"
-                  width={388}
-                  height={388}
-                  className="h-full w-full rounded-full object-cover object-top"
+                  className="w-full h-full object-cover object-top"
                 />
-              </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#040a10] via-[#040a10]/20 to-transparent" />
 
-              <div className="mt-7 text-center">
-                <div className="inline-flex items-center gap-2 rounded-full border border-teal/30 bg-obsidian/50 px-3.5 py-1 text-[10px] font-semibold uppercase tracking-[0.28em] text-teal">
-                  {DIRECTOR_ROLE}
+                {/* Floating Executive Badge */}
+                <div className="absolute bottom-4 left-4 right-4 rounded-xl bg-[#040a10]/92 backdrop-blur-md border border-[#5ec2a6]/40 p-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <div>
+                      <p className="font-display font-bold text-lg text-white">
+                        {DIRECTOR_NAME}
+                      </p>
+                      <p className="font-display text-xs font-semibold uppercase tracking-wider text-[#5ec2a6]">
+                        {DIRECTOR_ROLE} • S.A Business Solution
+                      </p>
+                    </div>
+                    <span className="rounded-lg bg-[#28aab4]/20 border border-[#5ec2a6]/40 px-3 py-1.5 font-display font-extrabold text-sm text-[#5ec2a6]">
+                      +30 Anos
+                    </span>
+                  </div>
                 </div>
-                <h3 className="mt-3 font-display text-3xl font-light text-ice sm:text-4xl">
-                  Silvana Ozima
-                </h3>
-                <p className="mt-1 text-xs font-medium uppercase tracking-[0.22em] text-ice/50">
-                  S.A Business Solution
-                </p>
-                <p className="mt-4 text-sm leading-relaxed text-ice/75">
-                  Mais de 30 anos de experiência em administração, finanças e recursos humanos, com
-                  foco em processos, gestão e decisões estratégicas.
-                </p>
-              </div>
-
-              <div className="mt-7 space-y-3 border-t border-ice/10 pt-6 text-xs sm:text-sm text-ice/75">
-                <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-3 rounded-xl border border-ice/10 bg-obsidian/40 px-4 py-3 transition-colors hover:border-teal/50 hover:text-teal"
-                >
-                  <Phone className="h-4 w-4 shrink-0 text-teal" />
-                  <span>{PHONE_DISPLAY}</span>
-                </a>
-                <a
-                  href={MAILTO_URL}
-                  className="flex items-center gap-3 rounded-xl border border-ice/10 bg-obsidian/40 px-4 py-3 transition-colors hover:border-teal/50 hover:text-teal break-all"
-                >
-                  <Mail className="h-4 w-4 shrink-0 text-teal" />
-                  <span>{EMAIL_ADDRESS}</span>
-                </a>
-              </div>
-
-              <div className="mt-6">
-                <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex w-full items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-teal to-mint px-6 py-3.5 text-xs sm:text-sm font-bold text-obsidian transition-all hover:brightness-110"
-                >
-                  <WhatsAppIcon className="h-4 w-4" />
-                  Falar com Silvana Ozima
-                </a>
               </div>
             </div>
-          </Reveal>
+          </div>
 
-          {/* Bio, Trajectory & Academic Credentials */}
-          <div className="space-y-8">
-            <Reveal delay={0.2}>
-              <div className="rounded-3xl border border-ice/10 bg-navy/70 p-7 sm:p-10">
-                <div className="flex items-center gap-3">
-                  <Briefcase className="h-5 w-5 text-teal" />
-                  <h3 className="font-display text-2xl font-light text-ice sm:text-3xl">
-                    Trajetória & Experiência Profissional
-                  </h3>
-                </div>
+          {/* Executive Bio & Academic Credentials (7 cols) */}
+          <div className="lg:col-span-7">
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#12263a] border border-[#28aab4]/40 px-4 py-1.5 mb-4">
+              <Award className="w-4 h-4 text-[#5ec2a6]" />
+              <span className="font-display font-semibold text-xs uppercase tracking-[0.14em] text-[#5ec2a6]">
+                Diretoria Executiva & Experiência Comprovada
+              </span>
+            </div>
 
-                <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-ice/75">
-                  <p>
-                    Ao longo de mais de três décadas, atuei em administração, finanças e recursos
-                    humanos, sempre buscando organizar processos, otimizar custos e apoiar decisões
-                    estratégicas com informações claras e confiáveis.
-                  </p>
-                  <p>
-                    Minha trajetória inclui a <strong className="text-ice">gestão completa de empresas</strong>,
-                    o relacionamento com clientes, fornecedores e instituições financeiras e a
-                    coordenação de equipes, com dedicação à melhoria contínua e ao atendimento de
-                    qualidade.
-                  </p>
-                  <p>
-                    Na <strong className="text-ice">gestão administrativa, financeira e de RH</strong>,
-                    responsável por planejamento, auditoria, contas a pagar e a receber,
-                    faturamento, fluxo de caixa, custos e investimentos, além de processos de
-                    contratação, folha de pagamento, controle de ponto, cargos e salários. Na{" "}
-                    <strong className="text-ice">área comercial</strong>, definição de estratégias e
-                    acompanhamento de metas e resultados de vendas. Na{" "}
-                    <strong className="text-ice">área técnica</strong>, supervisão de agendas,
-                    ordens de serviço, treinamentos e integração de equipes.
-                  </p>
-                  <p>
-                    Em <strong className="text-ice">consultoria</strong>, atuei com otimização de
-                    processos, gestão de documentos, controle de suprimentos e análise de custos,
-                    além de negociações com clientes, fornecedores, cartórios e instituições
-                    financeiras. Na <strong className="text-ice">coordenação pedagógica de polo</strong>,
-                    atuação em cursos de graduação e pós-graduação, com orientação de bancas em MBA
-                    e pós-graduação.
-                  </p>
-                </div>
-              </div>
-            </Reveal>
+            <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-[36px] text-white leading-[1.22] mb-5">
+              Liderança sênior com mais de três décadas na{" "}
+              <span className="teal-gradient-text">
+                gestão estratégica de empresas
+              </span>
+            </h2>
 
-            {/* Academic Credentials */}
-            <Reveal delay={0.3}>
-              <div className="rounded-3xl border border-ice/10 bg-navy/70 p-7 sm:p-10">
-                <div className="flex flex-wrap items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <GraduationCap className="h-5 w-5 text-teal" />
-                    <h3 className="font-display text-2xl font-light text-ice sm:text-3xl">
-                      Formação Acadêmica & Especializações
-                    </h3>
+            <p className="text-[#d5e0ec] text-base leading-relaxed mb-4">
+              À frente da <strong className="text-white">S.A Business Solution</strong>,{" "}
+              <strong className="text-white">{DIRECTOR_NAME}</strong> reúne mais de
+              30 anos de atuação executiva estruturando os setores{" "}
+              <span className="text-[#5ec2a6] font-medium">
+                Financeiro, Administrativo, Comercial, Recursos Humanos e
+                Processos Organizacionais
+              </span>{" "}
+              em empresas de diversos portes e segmentos.
+            </p>
+
+            <p className="text-[#c4d3e3] text-sm sm:text-base leading-relaxed mb-7">
+              Sua metodologia alia o rigor técnico da controladoria e da
+              padronização operacional (POPs, Fluxogramas e Programa 5S) à
+              habilidade de negociação e desenvolvimento humano — garantindo que
+              o planejamento estratégico saia do papel e se transforme em
+              indicadores claros em dashboard.
+            </p>
+
+            {/* 4 UNINTER Credentials Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {CREDENTIALS.map((cred, idx) => (
+                <div
+                  key={idx}
+                  className="rounded-xl bg-[#0a1826]/90 border border-[#28aab4]/30 hover:border-[#5ec2a6]/60 p-4 transition-colors"
+                >
+                  <div className="flex items-center gap-2.5 mb-2">
+                    <GraduationCap className="w-4 h-4 text-[#5ec2a6] shrink-0" />
+                    <span className="text-[11px] font-display font-bold uppercase tracking-wider text-[#28aab4]">
+                      {cred.institution.split("—")[0]}
+                    </span>
                   </div>
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-teal/25 bg-teal/10 px-3.5 py-1 text-[11px] font-semibold text-teal">
-                    <Award className="h-3.5 w-3.5" />
-                    Excelência Acadêmica
-                  </span>
+                  <h3 className="font-display font-bold text-sm text-white mb-1">
+                    {cred.degree}
+                  </h3>
+                  <p className="text-xs text-[#9fb3c8] leading-relaxed">
+                    {cred.focus}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* PART 2: SELBETTI SECTION 7 & 8 — Social Proof & Testimonials */}
+        <div className="pt-16 border-t border-[#28aab4]/20">
+          <div className="max-w-3xl mx-auto text-center mb-14">
+            <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-[36px] text-white leading-[1.22]">
+              O impacto prático de uma gestão{" "}
+              <span className="teal-gradient-text">
+                estruturada ponta a ponta
+              </span>
+            </h2>
+            <p className="mt-3 font-display font-medium text-base text-[#5ec2a6]">
+              Veja os resultados percebidos pelas diretorias que contam com a
+              metodologia S.A Business Solution:
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {TESTIMONIALS.map((item, idx) => (
+              <div
+                key={idx}
+                className="rounded-[16px] bg-[#0a1826]/90 border border-[#28aab4]/30 hover:border-[#5ec2a6] p-7 flex flex-col justify-between selbetti-card-glow transition-all"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-3 mb-5">
+                    <div className="w-10 h-10 rounded-full bg-[#12263a] border border-[#5ec2a6]/40 flex items-center justify-center">
+                      <Quote className="w-4 h-4 text-[#5ec2a6]" />
+                    </div>
+                    <span className="text-[11px] font-display font-bold uppercase tracking-wider text-[#5ec2a6] bg-[#5ec2a6]/10 border border-[#5ec2a6]/25 px-3 py-1 rounded-full">
+                      {item.area}
+                    </span>
+                  </div>
+
+                  <p className="text-sm sm:text-[15px] text-[#e1eaf2] leading-relaxed italic mb-6">
+                    "{item.quote}"
+                  </p>
                 </div>
 
-                <div className="mt-7 grid gap-4 sm:grid-cols-2">
-                  {CREDENTIALS.map((cred) => (
-                    <div
-                      key={cred.degree}
-                      className="group relative overflow-hidden rounded-2xl border border-ice/10 bg-obsidian/55 p-5 transition-all duration-300 hover:border-teal/40"
-                    >
-                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-teal to-mint" />
-                      <div className="pl-2">
-                        <div className="flex items-start justify-between gap-2">
-                          <h4 className="font-display text-lg font-medium text-ice group-hover:text-teal transition-colors">
-                            {cred.degree}
-                          </h4>
-                          <SaMonogram className="h-5 w-6 shrink-0 opacity-40 group-hover:opacity-90 transition-opacity" />
-                        </div>
-                        <p className="mt-1 text-xs font-semibold uppercase tracking-[0.15em] text-teal/85">
-                          {cred.institution}
-                        </p>
-                        <p className="mt-2.5 text-xs leading-relaxed text-ice/60">
-                          {cred.focus}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                <div className="pt-4 border-t border-white/10 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#28aab4] to-[#5ec2a6] flex items-center justify-center text-[#040a10] font-display font-bold text-sm shrink-0">
+                    <CheckCircle2 className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="font-display font-bold text-sm text-white">
+                      {item.role}
+                    </p>
+                    <p className="text-xs text-[#8fa6bc]">{item.author}</p>
+                  </div>
                 </div>
               </div>
-            </Reveal>
+            ))}
           </div>
         </div>
       </div>

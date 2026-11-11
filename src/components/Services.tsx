@@ -1,163 +1,180 @@
-import { useRef, useState, type MouseEvent } from "react";
 import {
-  AnimatePresence,
-  motion,
-  useMotionValue,
-  useSpring,
-} from "framer-motion";
-import { ArrowUpRight, Check } from "lucide-react";
-import { SERVICES, WHATSAPP_URL } from "../lib/data";
-import { EASE, Eyebrow, Reveal } from "../lib/anim";
+  Wallet,
+  Handshake,
+  TrendingUp,
+  Workflow,
+  BarChart3,
+  Check,
+  ArrowUpRight,
+} from "lucide-react";
+import { IMAGES, SERVICES, type Service } from "../lib/data";
 
-export default function Services() {
-  const [active, setActive] = useState<number | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+function ServiceCardIcon({ name }: { name: Service["iconName"] }) {
+  switch (name) {
+    case "wallet":
+      return <Wallet className="w-6 h-6 text-[#0a1826]" />;
+    case "handshake":
+      return <Handshake className="w-6 h-6 text-[#0a1826]" />;
+    case "trending":
+      return <TrendingUp className="w-6 h-6 text-[#0a1826]" />;
+    case "workflow":
+      return <Workflow className="w-6 h-6 text-[#0a1826]" />;
+    case "chart":
+      return <BarChart3 className="w-6 h-6 text-[#0a1826]" />;
+  }
+}
 
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const px = useSpring(mx, { stiffness: 180, damping: 22, mass: 0.5 });
-  const py = useSpring(my, { stiffness: 180, damping: 22, mass: 0.5 });
+interface ServicesProps {
+  onNavigate: (href: string) => void;
+}
 
-  const handleMove = (e: MouseEvent<HTMLDivElement>) => {
-    mx.set(e.clientX + 28);
-    my.set(e.clientY - 170);
-  };
-
+export function Services({ onNavigate }: ServicesProps) {
   return (
     <section
       id="solucoes"
-      className="relative w-full max-w-full overflow-hidden bg-navy py-20 sm:py-24 md:py-36"
+      className="relative py-24 lg:py-32 bg-[#040a10] border-t border-[#28aab4]/20 overflow-hidden"
     >
-      <div className="pointer-events-none absolute right-0 top-0 h-[320px] w-[320px] sm:h-[440px] sm:w-[440px] max-w-[100vw] rounded-full bg-teal/8 blur-[110px] sm:blur-[140px]" />
+      {/* Selbetti Section 6 Planet / Horizon Glow Background */}
+      <div aria-hidden="true" className="absolute inset-0 z-0">
+        <img
+          src={IMAGES.horizonGlow}
+          alt=""
+          loading="lazy"
+          className="w-full h-full object-cover object-top opacity-45"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#040a10] via-[#040a10]/65 to-[#040a10]" />
+      </div>
 
-      <div className="mx-auto max-w-7xl px-5 md:px-10">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div>
-            <Eyebrow>Portfólio de Serviços</Eyebrow>
-            <Reveal delay={0.1}>
-              <h2 className="mt-6 font-display text-4xl font-light leading-[1.05] text-ice md:text-6xl">
-                Soluções completas para a{" "}
-                <span className="italic text-teal">sua empresa</span>
-              </h2>
-            </Reveal>
+      <div className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
+        {/* Centered Header (Selbetti Section 6 exact structure) */}
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          <div className="inline-flex items-center gap-2 rounded-full bg-[#12263a]/90 border border-[#5ec2a6]/35 px-4 py-1.5 mb-5">
+            <span className="w-2 h-2 rounded-full bg-[#5ec2a6]" />
+            <span className="font-display font-semibold text-xs uppercase tracking-[0.14em] text-[#5ec2a6]">
+              Portfólio Oficial S.A Business Solution
+            </span>
           </div>
-          <Reveal delay={0.2}>
-            <p className="max-w-md text-[15px] leading-relaxed text-ice/60">
-              Cinco pilares estratégicos com entregas práticas para organizar o financeiro,
-              padronizar processos, impulsionar vendas e acompanhar resultados em tempo real.
-            </p>
-          </Reveal>
-        </div>
 
-        <div
-          ref={containerRef}
-          onMouseMove={handleMove}
-          onMouseLeave={() => setActive(null)}
-          className="relative mt-16"
-        >
-          {/* Floating preview card on desktop */}
-          <AnimatePresence>
-            {active !== null && (
-              <motion.div
-                key={active}
-                initial={{ opacity: 0, scale: 0.88, rotate: -3 }}
-                animate={{ opacity: 1, scale: 1, rotate: 2 }}
-                exit={{ opacity: 0, scale: 0.9, rotate: 4 }}
-                transition={{ duration: 0.35, ease: EASE }}
-                style={{ x: px, y: py }}
-                className="pointer-events-none fixed left-0 top-0 z-40 hidden h-[290px] w-[240px] overflow-hidden rounded-2xl border border-teal/35 bg-obsidian shadow-2xl shadow-obsidian lg:block"
-              >
-                <img
-                  src={SERVICES[active].image}
-                  alt={SERVICES[active].name}
-                  className="h-full w-full object-cover opacity-85"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/45 to-transparent" />
-                <div className="absolute bottom-3.5 left-4 right-4">
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-teal">
-                    {SERVICES[active].meta}
-                  </span>
-                  <p className="mt-0.5 font-display text-lg italic text-ice leading-snug">
-                    {SERVICES[active].name}
-                  </p>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {SERVICES.map((service, i) => (
-            <Reveal key={service.index} delay={i * 0.06} y={30}>
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noreferrer"
-                onMouseEnter={() => setActive(i)}
-                className={`group relative grid grid-cols-[auto_1fr_auto] items-start md:items-center gap-5 border-t border-ice/10 py-8 transition-colors duration-500 md:grid-cols-[70px_1fr_1.25fr_auto] md:gap-8 md:py-11 ${
-                  i === SERVICES.length - 1 ? "border-b" : ""
-                }`}
-              >
-                <div
-                  className="absolute inset-0 origin-bottom scale-y-0 bg-gradient-to-r from-teal/[0.08] via-mint/[0.04] to-transparent transition-transform duration-500 ease-out group-hover:scale-y-100"
-                  aria-hidden
-                />
-
-                <span className="relative pt-1 md:pt-0 font-display text-sm italic text-teal/70 transition-colors group-hover:text-teal md:text-base">
-                  ({service.index})
-                </span>
-
-                <div className="relative">
-                  <h3 className="font-display text-2xl font-light text-ice transition-all duration-500 group-hover:translate-x-2 group-hover:text-teal md:text-4xl">
-                    {service.name}
-                  </h3>
-                  <p className="mt-1.5 text-[11px] uppercase tracking-[0.22em] text-teal/80">
-                    {service.meta}
-                  </p>
-                  <p className="mt-3 max-w-md text-sm leading-relaxed text-ice/60">
-                    {service.description}
-                  </p>
-                </div>
-
-                {/* Deliverables list */}
-                <div className="relative col-span-3 md:col-span-1 pl-8 md:pl-0">
-                  <ul className="grid gap-2.5 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
-                    {service.deliverables.map((item) => (
-                      <li
-                        key={item}
-                        className="flex items-center gap-2.5 rounded-xl border border-ice/10 bg-obsidian/50 px-3.5 py-2.5 text-xs sm:text-[13px] font-medium text-ice/85 transition-all duration-300 group-hover:border-teal/35 group-hover:bg-obsidian/80 group-hover:text-ice"
-                      >
-                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal/15 text-teal">
-                          <Check className="h-3 w-3" />
-                        </span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="relative flex items-center gap-5 self-center">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full border border-ice/15 transition-all duration-500 group-hover:rotate-45 group-hover:border-teal group-hover:bg-gradient-to-br group-hover:from-teal group-hover:to-mint">
-                    <ArrowUpRight className="h-4 w-4 text-ice transition-colors group-hover:text-obsidian" />
-                  </span>
-                </div>
-              </a>
-            </Reveal>
-          ))}
-        </div>
-
-        <Reveal delay={0.2} className="mt-12 flex justify-center">
-          <p className="text-center text-sm text-ice/55">
-            Precisa de uma solução específica ou do pacote completo de gestão?{" "}
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="italic text-teal underline decoration-teal/40 underline-offset-4 transition-colors hover:text-ice"
-            >
-              Fale com a S.A Business Solution
-            </a>{" "}
-            e solicite uma proposta personalizada.
+          <h2 className="font-display font-bold text-2xl sm:text-3xl lg:text-[40px] text-white leading-[1.2]">
+            Soluções que conectam{" "}
+            <span className="teal-gradient-text">
+              estratégia, processos e resultados
+            </span>
+          </h2>
+          <p className="mt-4 font-display font-medium text-base sm:text-lg text-[#5ec2a6]">
+            Conheça as 5 unidades de negócio especializadas para estruturar e
+            escalar a sua empresa:
           </p>
-        </Reveal>
+        </div>
+
+        {/* Solutions Grid: 5 Official Service Pillars */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+          {SERVICES.map((service) => (
+            <div
+              key={service.index}
+              className="group relative flex flex-col justify-between rounded-[18px] bg-[#0a1826]/92 backdrop-blur-md border border-[#28aab4]/35 hover:border-[#5ec2a6] p-7 sm:p-8 transition-all duration-300 selbetti-card-glow hover:-translate-y-1.5"
+            >
+              <div>
+                {/* Top Row: Selbetti White Circular Icon Badge + Unit Number */}
+                <div className="flex items-center justify-between gap-4 mb-6">
+                  <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-[0_6px_20px_rgba(255,255,255,0.18)] group-hover:scale-105 transition-transform">
+                    <ServiceCardIcon name={service.iconName} />
+                  </div>
+                  <span className="font-display font-bold text-xs uppercase tracking-[0.16em] text-[#5ec2a6] bg-[#12263a] border border-[#28aab4]/30 px-3.5 py-1.5 rounded-full">
+                    Unidade {service.index}
+                  </span>
+                </div>
+
+                {/* Title & Subtitle */}
+                <h3 className="font-display font-bold text-2xl text-white group-hover:text-[#5ec2a6] transition-colors mb-2">
+                  {service.name}
+                </h3>
+                <p className="font-display font-semibold text-xs uppercase tracking-wider text-[#28aab4] mb-4">
+                  {service.subtitle}
+                </p>
+
+                {/* Description */}
+                <p className="text-sm text-[#c4d3e3] leading-relaxed mb-6">
+                  {service.description}
+                </p>
+
+                {/* Official Client Deliverables Box */}
+                <div className="rounded-xl bg-[#040a10]/70 border border-[#28aab4]/20 p-4 space-y-2.5">
+                  <p className="text-[11px] font-display font-bold uppercase tracking-[0.14em] text-[#5ec2a6] mb-2">
+                    Serviços e Entregas Inclusas:
+                  </p>
+                  {service.deliverables.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-start gap-2.5 text-sm text-white font-medium"
+                    >
+                      <span className="mt-0.5 w-4 h-4 rounded-full bg-[#28aab4]/20 border border-[#5ec2a6]/50 flex items-center justify-center shrink-0">
+                        <Check className="w-2.5 h-2.5 text-[#5ec2a6]" />
+                      </span>
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Bottom Footer with Circular Arrow Action (Selbetti Section 6 card footer) */}
+              <div className="mt-7 pt-5 border-t border-white/10 flex items-center justify-between gap-4">
+                <span className="text-xs font-medium text-[#8fa6bc]">
+                  {service.meta}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => onNavigate("#formulario")}
+                  aria-label={`Solicitar proposta para ${service.name}`}
+                  className="inline-flex items-center gap-2 text-xs font-display font-bold uppercase tracking-wider text-white group-hover:text-[#5ec2a6] transition-colors cursor-pointer"
+                >
+                  <span>Contratar</span>
+                  <span className="w-9 h-9 rounded-full bg-[#12263a] group-hover:bg-[#5ec2a6] group-hover:text-[#040a10] border border-[#5ec2a6]/40 flex items-center justify-center transition-all">
+                    <ArrowUpRight className="w-4 h-4" />
+                  </span>
+                </button>
+              </div>
+            </div>
+          ))}
+
+          {/* 6th Card: Custom Full-Scope Diagnostic Card to complete the 3x2 grid */}
+          <div className="relative flex flex-col justify-between rounded-[18px] bg-gradient-to-br from-[#12263a] via-[#0a1826] to-[#040a10] border-2 border-[#5ec2a6] p-7 sm:p-8 shadow-[0_0_30px_rgba(94,194,166,0.2)]">
+            <div>
+              <span className="inline-block font-display font-bold text-xs uppercase tracking-[0.16em] text-[#040a10] bg-[#5ec2a6] px-3.5 py-1.5 rounded-full mb-6">
+                Consultoria Integrada 360°
+              </span>
+              <h3 className="font-display font-bold text-2xl text-white leading-snug mb-3">
+                Precisa integrar todas as 5 áreas na sua empresa?
+              </h3>
+              <p className="text-sm text-[#d5e0ec] leading-relaxed mb-6">
+                Montamos um plano de ação personalizado combinando Financeiro,
+                Negociações, Comercial, Processos (POPs, Fluxogramas, 5S e
+                Organograma) e Dashboard Mensal.
+              </p>
+
+              <div className="rounded-xl bg-[#040a10]/60 border border-[#5ec2a6]/30 p-4">
+                <p className="text-xs text-[#5ec2a6] font-display font-semibold mb-1">
+                  Atendimento Executivo Direto
+                </p>
+                <p className="text-xs text-[#c4d3e3] leading-relaxed">
+                  Diagnóstico inicial sem compromisso para mapear as prioridades
+                  imediatas do seu negócio.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-7">
+              <button
+                type="button"
+                onClick={() => onNavigate("#formulario")}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#28aab4] to-[#5ec2a6] px-6 py-4 font-display font-bold text-xs sm:text-sm uppercase tracking-wider text-[#040a10] selbetti-cta-glow hover:brightness-110 transition-all cursor-pointer"
+              >
+                Solicitar Diagnóstico Completo
+                <ArrowUpRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

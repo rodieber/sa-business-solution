@@ -1,194 +1,215 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowDown, Award, Building2, ShieldCheck } from "lucide-react";
-import { DIRECTOR_NAME, IMAGES, WHATSAPP_URL } from "../lib/data";
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  BarChart3,
+  FileCheck2,
+  Handshake,
+  Layers,
+  TrendingUp,
+  Wallet,
+} from "lucide-react";
+import { IMAGES, WHATSAPP_URL } from "../lib/data";
 import { EASE } from "../lib/anim";
-import { BrandLinesPattern, SaMonogram, WhatsAppIcon } from "./icons";
+import { SaMonogram, WhatsAppIcon } from "./icons";
 
-function RotatingBadge() {
+const ORBIT_NODES = [
+  {
+    label: "Financeiro",
+    sub: "Caixa & Conciliação",
+    Icon: Wallet,
+    pos: "top-0 left-1/2 -translate-x-1/2 -translate-y-1/2",
+  },
+  {
+    label: "Negociações",
+    sub: "Clientes & Fornecedores",
+    Icon: Handshake,
+    pos: "top-[22%] right-0 translate-x-1/3 -translate-y-1/2",
+  },
+  {
+    label: "Comercial",
+    sub: "Prospecção & Reativação",
+    Icon: TrendingUp,
+    pos: "bottom-[22%] right-0 translate-x-1/3 translate-y-1/2",
+  },
+  {
+    label: "Gestão & KPIs",
+    sub: "Dashboard Mensal",
+    Icon: BarChart3,
+    pos: "bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2",
+  },
+  {
+    label: "Programa 5S",
+    sub: "Organograma & Cultura",
+    Icon: Layers,
+    pos: "bottom-[22%] left-0 -translate-x-1/3 translate-y-1/2",
+  },
+  {
+    label: "Processos",
+    sub: "POPs & Fluxogramas",
+    Icon: FileCheck2,
+    pos: "top-[22%] left-0 -translate-x-1/3 -translate-y-1/2",
+  },
+];
+
+/**
+ * Interactive Orbital Diagram inspired directly by Selbetti Business Consulting's hero graphic
+ */
+function EcosystemOrbit({ onSelect }: { onSelect: () => void }) {
   return (
-    <div className="relative h-32 w-32 md:h-36 md:w-36">
-      <svg viewBox="0 0 100 100" className="h-full w-full animate-spin-slow-safe">
-        <defs>
-          <path id="saCirclePath" d="M 50,50 m -38,0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0" />
-        </defs>
-        <text className="fill-teal text-[7.6px] font-semibold uppercase tracking-[0.24em]">
-          <textPath href="#saCirclePath">
-            s.a business solution · solução empresarial ·
-          </textPath>
-        </text>
-      </svg>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <SaMonogram className="h-9 w-11" />
+    <div className="relative mx-auto flex h-[340px] w-[340px] sm:h-[430px] sm:w-[430px] lg:h-[470px] lg:w-[470px] items-center justify-center select-none">
+      {/* Outer ambient glow */}
+      <div className="pointer-events-none absolute inset-4 rounded-full bg-teal/20 blur-[70px]" />
+
+      {/* Outer dashed ring */}
+      <div className="pointer-events-none absolute inset-6 sm:inset-8 rounded-full border-2 border-dashed border-mint/35" />
+
+      {/* Main connecting ring */}
+      <div className="pointer-events-none absolute inset-10 sm:inset-12 rounded-full border-[3px] border-teal/55 shadow-[0_0_35px_rgba(40,170,180,0.35)]" />
+
+      {/* Inner subtle ring */}
+      <div className="pointer-events-none absolute inset-24 sm:inset-28 rounded-full border border-mint/30 bg-obsidian/60 backdrop-blur-sm" />
+
+      {/* Center Core Node (S.A Monogram inside crisp white circle + glowing teal ring, just like Selbetti) */}
+      <div className="relative z-20 flex h-36 w-36 sm:h-44 sm:w-44 items-center justify-center rounded-full border-2 border-mint bg-gradient-to-br from-slate-navy via-teal-dark to-teal p-3 shadow-[0_0_50px_rgba(94,194,166,0.45)]">
+        <div className="flex h-24 w-24 sm:h-28 sm:w-28 flex-col items-center justify-center rounded-full bg-white shadow-inner">
+          <SaMonogram className="h-12 w-14 sm:h-14 sm:w-16" />
+          <span className="mt-0.5 font-display text-[8px] font-extrabold uppercase tracking-[0.2em] text-slate-navy">
+            S.A Business
+          </span>
+        </div>
+      </div>
+
+      {/* 6 Orbital Service Nodes */}
+      <div className="absolute inset-10 sm:inset-12 z-30">
+        {ORBIT_NODES.map((node, i) => {
+          const Icon = node.Icon;
+          return (
+            <motion.button
+              key={node.label}
+              type="button"
+              onClick={onSelect}
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, ease: EASE, delay: 0.35 + i * 0.08 }}
+              className={`group absolute ${node.pos} flex flex-col items-center justify-center h-24 w-24 sm:h-28 sm:w-28 rounded-full border-2 border-mint/80 bg-gradient-to-b from-slate-navy to-teal-dark text-center shadow-[0_0_25px_rgba(40,170,180,0.45)] transition-all duration-300 hover:scale-110 hover:border-white hover:from-teal hover:to-mint`}
+            >
+              <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-mint transition-colors group-hover:text-obsidian" />
+              <span className="mt-1 font-display text-[10px] sm:text-[11px] font-bold leading-tight text-white group-hover:text-obsidian px-1">
+                {node.label}
+              </span>
+              <span className="hidden sm:block text-[8px] font-medium text-ice/75 group-hover:text-obsidian/80 px-2 leading-tight">
+                {node.sub}
+              </span>
+            </motion.button>
+          );
+        })}
       </div>
     </div>
   );
 }
 
-export default function Hero() {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
-  const imgScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
-
+export default function Hero({ onNavigate }: { onNavigate: (href: string) => void }) {
   return (
     <section
-      ref={ref}
       id="inicio"
-      className="relative min-h-[100svh] w-full overflow-hidden flex flex-col justify-center pt-28 pb-16 sm:pt-32 sm:pb-20 md:pt-36 md:pb-24"
+      className="relative min-h-[780px] lg:min-h-[840px] w-full overflow-hidden flex items-center pt-28 pb-16 md:pt-32 md:pb-24"
     >
-      {/* Background image with parallax */}
-      <motion.div style={{ y: imgY, scale: imgScale }} className="absolute inset-0">
+      {/* Background image + Selbetti-style top-to-bottom dark gradient overlay */}
+      <div className="absolute inset-0">
         <img
-          src={IMAGES.hero}
-          alt="S.A Business Solution — Consultoria e Gestão Empresarial"
+          src={IMAGES.heroConsulting}
+          alt="S.A Business Solution — Consultoria de Gestão Empresarial"
           fetchpriority="high"
           width={1440}
-          height={1440}
-          className="h-full w-full object-cover object-center opacity-50"
+          height={819}
+          className="h-full w-full object-cover object-top"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-obsidian via-obsidian/90 to-obsidian/45 md:from-obsidian/98 md:via-obsidian/80 md:to-obsidian/35" />
-        <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-obsidian/60" />
-      </motion.div>
-
-      {/* Subtle brand lines graphic on bottom-right */}
-      <div className="pointer-events-none absolute -bottom-10 right-0 z-0 w-[340px] sm:w-[480px] md:w-[620px] opacity-25">
-        <BrandLinesPattern className="w-full h-auto" />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(10, 24, 38, 0.58) 0%, rgba(7, 18, 28, 0.84) 52%, #040a10 100%)",
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-obsidian/90 via-obsidian/65 to-obsidian/30" />
       </div>
 
-      <div className="grain absolute inset-0" />
-
-      {/* Main content */}
-      <motion.div
-        style={{ opacity: contentOpacity, y: contentY }}
-        className="relative z-10 mx-auto flex w-full max-w-7xl flex-col justify-center px-5 md:px-10"
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: EASE, delay: 0.3 }}
-          className="mb-5 sm:mb-7 flex flex-wrap items-center gap-3"
-        >
-          <span className="h-px w-8 sm:w-10 bg-gradient-to-r from-teal to-mint" />
-          <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.32em] sm:tracking-[0.38em] text-teal">
-            Consultoria & Soluções Empresariais · +30 Anos de Experiência
-          </span>
-        </motion.div>
-
-        <h1 className="font-display font-light leading-[0.98] text-ice max-w-4xl">
-          <span className="block overflow-hidden pb-1">
-            <motion.span
-              initial={{ y: "110%" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.9, ease: EASE, delay: 0.45 }}
-              className="block text-[clamp(2.35rem,5.2vw,5.4rem)] font-light tracking-tight"
-            >
-              Excelência em gestão e
-            </motion.span>
-          </span>
-          <span className="block overflow-hidden pb-2">
-            <motion.span
-              initial={{ y: "110%" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.9, ease: EASE, delay: 0.58 }}
-              className="block text-[clamp(2.35rem,5.2vw,5.4rem)] font-light tracking-tight"
-            >
-              <span className="teal-gradient-text italic pr-2">soluções</span> para sua empresa.
-            </motion.span>
-          </span>
-        </h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: EASE, delay: 0.78 }}
-          className="mt-5 sm:mt-6 max-w-xl text-[14px] sm:text-[16px] leading-relaxed text-ice/75"
-        >
-          Organizamos processos, otimizamos custos e apoiamos decisões estratégicas com
-          informações claras e confiáveis. Mais de três décadas de atuação executiva em
-          administração, finanças, recursos humanos e estratégia comercial.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: EASE, delay: 0.95 }}
-          className="mt-7 sm:mt-9 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 w-full max-w-md sm:max-w-none"
-        >
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="group flex justify-center items-center gap-3 rounded-full bg-gradient-to-r from-teal to-mint px-7 sm:px-8 py-4 text-xs sm:text-sm font-bold tracking-wide text-obsidian transition-all duration-300 hover:brightness-110 hover:shadow-[0_0_40px_rgba(40,170,180,0.45)]"
-          >
-            <WhatsAppIcon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
-            Solicitar Diagnóstico Executivo
-          </a>
-          <a
-            href="#solucoes"
-            className="group flex justify-center items-center gap-3 rounded-full border border-ice/25 bg-obsidian/40 backdrop-blur-sm px-7 sm:px-8 py-4 text-xs sm:text-sm font-semibold tracking-wide text-ice transition-all duration-300 hover:border-teal/70 hover:text-teal"
-          >
-            Conhecer Soluções
-            <ArrowDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-1" />
-          </a>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.9, delay: 1.15 }}
-          className="mt-9 sm:mt-12 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-ice/10 pt-6 text-xs sm:text-[13px] text-ice/65 max-w-2xl"
-        >
-          <span className="flex items-center gap-2">
-            <Award className="h-4 w-4 text-teal" />
-            <span>
-              Direção Executiva: <strong className="font-semibold text-ice">{DIRECTOR_NAME}</strong>
-            </span>
-          </span>
-          <span className="hidden sm:inline-block h-3.5 w-px bg-ice/20" />
-          <span className="flex items-center gap-2">
-            <Building2 className="h-4 w-4 text-mint" />
-            <span>Administração · Finanças · RH · Comercial</span>
-          </span>
-          <span className="hidden sm:inline-block h-3.5 w-px bg-ice/20" />
-          <span className="flex items-center gap-2">
-            <ShieldCheck className="h-4 w-4 text-teal" />
-            <span>+30 anos de experiência sólida</span>
-          </span>
-        </motion.div>
-      </motion.div>
-
-      {/* Rotating badge */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.9, ease: EASE, delay: 1.25 }}
-        className="absolute bottom-8 right-6 z-10 hidden lg:block xl:right-12 xl:bottom-12"
-      >
-        <RotatingBadge />
-      </motion.div>
-
-      {/* Scroll hint */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.35, duration: 0.8 }}
-        className="absolute bottom-3 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-1.5 lg:flex"
-      >
-        <span className="text-[9px] uppercase tracking-[0.35em] text-ice/40">explorar</span>
-        <div className="relative h-8 w-px overflow-hidden bg-ice/15">
+      {/* Main Container (1360px max-width like Selbetti) */}
+      <div className="relative z-10 mx-auto grid w-full max-w-[1360px] items-center gap-12 px-5 md:px-8 lg:grid-cols-[1.08fr_0.92fr] lg:gap-8">
+        {/* Left Column: Title, Description, Glowing CTA */}
+        <div className="flex flex-col items-start text-left">
           <motion.div
-            className="absolute left-0 top-0 h-3 w-px bg-teal"
-            animate={{ y: [-12, 32] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-          />
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="inline-flex items-center gap-2.5 rounded-full border border-mint/40 bg-slate-navy/80 px-4 py-1.5 backdrop-blur-md"
+          >
+            <span className="h-2 w-2 rounded-full bg-mint animate-pulse" />
+            <span className="font-display text-[11px] font-bold uppercase tracking-[0.24em] text-mint">
+              Consultoria & Gestão Empresarial
+            </span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
+            className="mt-6 font-display text-4xl font-bold leading-[1.12] tracking-tight text-white sm:text-5xl lg:text-[54px]"
+          >
+            S.A Business <span className="teal-gradient-text">Solution</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.2 }}
+            className="mt-5 max-w-xl font-body text-base sm:text-lg lg:text-[20px] font-normal leading-relaxed text-white/90"
+          >
+            Consultoria de gestão empresarial com foco em{" "}
+            <strong className="font-semibold text-mint">
+              Financeiro, Negociações, Comercial, Processos e Organização (POPs, Fluxogramas, 5S e
+              Organograma) e Gestão por Indicadores
+            </strong>{" "}
+            com soluções ponta a ponta, da estratégia à execução, para destravar resultados,
+            garantir governança e superar desafios organizacionais.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.3 }}
+            className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto"
+          >
+            <button
+              onClick={() => onNavigate("#formulario")}
+              className="group inline-flex items-center justify-center gap-3 rounded-lg bg-gradient-to-r from-teal to-mint px-8 py-4 font-display text-base sm:text-[17px] font-bold text-obsidian selbetti-cta-glow transition-all duration-300 hover:brightness-110"
+            >
+              <span>Veja como atuamos na prática!</span>
+              <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+            </button>
+
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center gap-2.5 rounded-lg border border-mint/50 bg-obsidian/60 px-7 py-4 font-display text-sm sm:text-base font-semibold text-white backdrop-blur-md transition-all duration-300 hover:border-mint hover:bg-slate-navy"
+            >
+              <WhatsAppIcon className="h-4 w-4 text-mint" />
+              <span>Falar no WhatsApp</span>
+            </a>
+          </motion.div>
         </div>
-      </motion.div>
+
+        {/* Right Column: Interactive Ecosystem Orbit (Selbetti Group-286-7 equivalent) */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: EASE, delay: 0.2 }}
+          className="flex justify-center lg:justify-end py-6"
+        >
+          <EcosystemOrbit onSelect={() => onNavigate("#solucoes")} />
+        </motion.div>
+      </div>
     </section>
   );
 }

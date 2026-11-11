@@ -1,68 +1,38 @@
-import { useEffect, useRef } from "react";
-import Lenis from "lenis";
+import { useCallback } from "react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
-import Marquee from "./components/Marquee";
-import About from "./components/About";
-import Services from "./components/Services";
-import Leadership from "./components/Leadership";
-import Methodology from "./components/Methodology";
-import Faq from "./components/Faq";
-import Cta from "./components/Cta";
-import Footer from "./components/Footer";
+import { About } from "./components/About";
+import { Conquests } from "./components/Conquests";
+import { Services } from "./components/Services";
+import { Leadership } from "./components/Leadership";
+import { Cta } from "./components/Cta";
+import { Faq } from "./components/Faq";
+import { Footer } from "./components/Footer";
 
-export default function App() {
-  const lenisRef = useRef<Lenis | null>(null);
-
-  useEffect(() => {
-    const lenis = new Lenis({ duration: 1.15, smoothWheel: true });
-    lenisRef.current = lenis;
-    let raf = 0;
-    const loop = (time: number) => {
-      lenis.raf(time);
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-    return () => {
-      cancelAnimationFrame(raf);
-      lenis.destroy();
-    };
+export function App() {
+  const navigate = useCallback((href: string) => {
+    const id = href.replace("#", "");
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }, []);
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      const anchor = (e.target as HTMLElement).closest(
-        'a[href^="#"]'
-      ) as HTMLAnchorElement | null;
-      if (!anchor) return;
-      const href = anchor.getAttribute("href");
-      if (href && href.length > 1 && document.querySelector(href)) {
-        e.preventDefault();
-        lenisRef.current?.scrollTo(href, { duration: 1.35 });
-      }
-    };
-    document.addEventListener("click", handler);
-    return () => document.removeEventListener("click", handler);
-  }, []);
-
-  const navigate = (href: string) => {
-    lenisRef.current?.scrollTo(href, { duration: 1.35 });
-  };
 
   return (
-    <div className="relative min-h-screen w-full max-w-full overflow-x-hidden bg-obsidian text-ice">
+    <div className="min-h-screen bg-[#040a10] text-white selection:bg-[#28aab4] selection:text-[#040a10]">
       <Navbar onNavigate={navigate} />
       <main>
-        <Hero />
-        <Marquee />
-        <About />
-        <Services />
+        <Hero onNavigate={navigate} />
+        <About onNavigate={navigate} />
+        <Conquests onNavigate={navigate} />
+        <Services onNavigate={navigate} />
         <Leadership />
-        <Methodology />
-        <Faq />
         <Cta />
+        <Faq />
       </main>
       <Footer onNavigate={navigate} />
     </div>
   );
 }
+
+export default App;

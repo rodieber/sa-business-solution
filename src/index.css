@@ -1,21 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  --color-obsidian: #071019;
-  --color-navy: #0c1b2a;
-  --color-slate-navy: #13283e;
+  --color-obsidian: #040a10;
+  --color-navy: #0a1826;
+  --color-slate-navy: #12263a;
   --color-navy-light: #1a354b;
   --color-teal: #28aab4;
+  --color-teal-dark: #167a82;
   --color-mint: #5ec2a6;
-  --color-aqua: #8ee0d2;
-  --color-ice: #f4f7fa;
-  --color-steel: #94a7b8;
+  --color-aqua: #80baa5;
+  --color-ice: #ffffff;
+  --color-steel: #b0c0d0;
 
-  --font-display: "Fraunces", "Cormorant Garamond", "Georgia", serif;
-  --font-body: "Plus Jakarta Sans", "Segoe UI", Roboto, sans-serif;
+  --font-display: "Montserrat", "Plus Jakarta Sans", sans-serif;
+  --font-body: "Plus Jakarta Sans", "Roboto", sans-serif;
 
   --animate-marquee: marquee 34s linear infinite;
-  --animate-spin-slow: rotate-slow 18s linear infinite;
+  --animate-spin-slow: rotate-slow 28s linear infinite;
+  --animate-spin-reverse: rotate-reverse 28s linear infinite;
 
   @keyframes marquee {
     from {
@@ -32,6 +34,15 @@
     }
     to {
       transform: rotate(360deg);
+    }
+  }
+
+  @keyframes rotate-reverse {
+    from {
+      transform: rotate(360deg);
+    }
+    to {
+      transform: rotate(0deg);
     }
   }
 }
@@ -61,14 +72,14 @@ body {
 
 ::selection {
   background: #28aab4;
-  color: #071019;
+  color: #040a10;
 }
 
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #071019;
+  background: #040a10;
 }
 ::-webkit-scrollbar-thumb {
   background: #1a354b;
@@ -78,46 +89,38 @@ body {
   background: #28aab4;
 }
 
-/* ---------- utilities ---------- */
+/* ---------- Selbetti-inspired corporate consulting utilities ---------- */
 
 .teal-gradient-text {
-  background: linear-gradient(100deg, #8ee0d2 0%, #28aab4 35%, #5ec2a6 68%, #8ee0d2 100%);
-  background-size: 200% auto;
+  background: linear-gradient(95deg, #ffffff 0%, #5ec2a6 45%, #28aab4 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+.selbetti-active-bar {
+  background: linear-gradient(90deg, #12263a 0%, #28aab4 60%, #5ec2a6 100%);
+  border: 1px solid #5ec2a6;
+  box-shadow: 0 0 28px rgba(40, 170, 180, 0.35);
+}
+
+.selbetti-card-glow {
+  border: 1px solid rgba(94, 194, 166, 0.35);
+  box-shadow: 0 0 36px rgba(40, 170, 180, 0.16);
+}
+
+.selbetti-cta-glow {
+  box-shadow: 0 0 29px 0 rgba(40, 170, 180, 0.65);
+}
+
+.animate-orbit-safe {
   @media (prefers-reduced-motion: no-preference) {
-    animation: shimmer 7s linear infinite;
+    animation: rotate-slow 36s linear infinite;
   }
 }
 
-@keyframes shimmer {
-  to {
-    background-position: 200% center;
-  }
-}
-
-.animate-marquee-safe {
+.animate-counter-orbit-safe {
   @media (prefers-reduced-motion: no-preference) {
-    animation: marquee 34s linear infinite;
+    animation: rotate-reverse 36s linear infinite;
   }
-}
-
-.animate-spin-slow-safe {
-  @media (prefers-reduced-motion: no-preference) {
-    animation: rotate-slow 18s linear infinite;
-  }
-}
-
-.grain::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.045;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-.teal-hairline {
-  background: linear-gradient(90deg, transparent, rgba(40, 170, 180, 0.5), transparent);
 }
